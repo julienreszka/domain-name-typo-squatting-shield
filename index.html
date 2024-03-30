@@ -10,7 +10,7 @@
 <body>
   <style>
     body {
-      font-size: x-large;
+      font-size: large;
       font-family: sans-serif;
     }
 
@@ -29,6 +29,33 @@
     summary {
       cursor: pointer;
       user-select: none;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    thead {
+      position: sticky;
+      top: 0;
+      background-color: white;
+      z-index: 1;
+    }
+
+    td:nth-child(1) {
+      position: sticky;
+      left: 0;
+      background-color: white;
+    }
+
+    td,
+    th {
+      border: 1px solid grey;
+    }
+
+    input {
+      width: 100%;
     }
   </style>
   <h1>Domain Name Typo-squatting Shield</h1>
@@ -61,6 +88,19 @@
 </html>
 
 <script type="module">
+
+  const FEATURES = {
+    inTable: {
+      displayColumns: {
+        domain: true,
+        sansSerif: true,
+        serif: true,
+        uppercase: true,
+        uppercaseSerif: true
+      }
+    }
+  }
+
   var tldsURL = 'https://data.iana.org/TLD/tlds-alpha-by-domain.txt'
   let tlds = []
   // check if the tlds are cached in local storage
@@ -90,11 +130,17 @@
   console.assert(isValidTld('google.con') === false)
   console.assert(isValidTld('google.com') === true)
   const generateLink = function (domain) {
+
+    let columns = {
+      uppercaseSerif: FEATURES.inTable.displayColumns.uppercaseSerif ?
+        `<td><a class="uppercase serif" href="http://${domain}" target="_blank">${domain}</a></td>` :
+        '',
+    }
     return isValidTld(domain) ? `
     <td><a class="sans-serif" href="http://${domain}" target="_blank">${domain}</a></td>
     <td><a class="serif" href="http://${domain}" target="_blank">${domain}</a></td> 
     <td><a class="uppercase" href="http://${domain}" target="_blank">${domain}</a></td>
-    <td><a class="uppercase serif" href="http://${domain}" target="_blank">${domain}</a></td>
+    ${columns.uppercaseSerif}
   ` : 'Invalid TLD'
   }
 
@@ -283,6 +329,7 @@
 
 
   var domains = [
+    'example.com',
     'google.com', 'facebook.com', 'netflix.com', 'amazon.com', 'microsoft.com', 'apple.com'
   ];
 
