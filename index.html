@@ -52,13 +52,23 @@
 <script type="module">
   var tldsURL = 'https://data.iana.org/TLD/tlds-alpha-by-domain.txt'
   let tlds = []
-  await fetch(tldsURL)
-    .then(response => response.text())
-    .then(data => {
-      tlds = data.split('\n').filter(tld => !tld.startsWith('#')).map(tld => tld.toLowerCase())
-      console.log(tlds)
-    })
-    .catch(error => console.log(error));
+  // check if the tlds are cached in local storage
+  if (localStorage.getItem('tlds')) {
+    tlds = JSON.parse(localStorage.getItem('tlds'))
+  }
+  if (tlds.length) {
+    console.log('TLDs loaded from cache')
+  } else {
+    console.log('TLDs loaded from the internet')
+    await fetch(tldsURL)
+      .then(response => response.text())
+      .then(data => {
+        tlds = data.split('\n').filter(tld => !tld.startsWith('#')).map(tld => tld.toLowerCase())
+        // TODO cache the tlds in local storage
+        localStorage.setItem('tlds', JSON.stringify(tlds))
+      })
+      .catch(error => console.log(error));
+  }
 
   const isValidTld = function (domain) {
     return tlds.includes(domain.split('.').pop())
