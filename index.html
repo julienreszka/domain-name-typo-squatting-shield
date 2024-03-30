@@ -1,0 +1,268 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Domain Name Typo squatting shield</title>
+  <script src="app.js"></script>
+</head>
+
+<body>
+  <style>
+    body {
+      font-size: x-large;
+    }
+
+    a {
+      font-family: sans-serif;
+    }
+
+    summary {
+      cursor: pointer;
+      user-select: none;
+    }
+  </style>
+  <h1>Domain Name Typo squatting shield</h1>
+  <p>
+    A web app that allows you find similar domain names to your domain name to protect your brand from typo-squatting.
+  </p>
+  <p>Enter your domain name to generate similar domain names that could be used for typo squatting.</p>
+  <details>
+    <summary>
+      Examples
+    </summary>
+    <div class="examples-wrapper">
+
+    </div>
+  </details>
+  <input type="text" id="domain" placeholder="Enter your domain name" autofocus>
+  <div id="output"></div>
+</body>
+
+</html>
+
+<script type="module">
+  var tldsURL = 'https://data.iana.org/TLD/tlds-alpha-by-domain.txt'
+  let tlds = []
+  await fetch(tldsURL)
+    .then(response => response.text())
+    .then(data => {
+      tlds = data.split('\n').filter(tld => !tld.startsWith('#')).map(tld => tld.toLowerCase())
+      console.log(tlds)
+    })
+    .catch(error => console.log(error));
+
+  const isValidTld = function (domain) {
+    return tlds.includes(domain.split('.').pop())
+  }
+
+  console.assert(isValidTld('google.con') === false)
+  console.assert(isValidTld('google.com') === true)
+  const generateLink = function (domain) {
+    return isValidTld(domain) ? `<a href="http://${domain}" target="_blank">${domain}</a>` : 'Invalid TLD'
+  }
+
+  if (window.location.search) {
+    const urlParams = new URLSearchParams(window.location.search);
+    document.getElementById('domain').value = urlParams.get('domain');
+    generateSimilarDomains();
+  }
+
+
+  function generateSimilarDomains() {
+    const domain = document.getElementById('domain').value;
+    // update the url query string
+    const url = new URL(window.location.href);
+    url.searchParams.set('domain', domain);
+    window.history.pushState({}, '', url);
+    const output = document.getElementById('output');
+    const similarDomains = [];
+
+    if (domain.includes('l')) {
+      similarDomains.push(domain.replace('l', 'I'));
+      similarDomains.push(domain.replace('l', '1'));
+      let lCount = domain.match(/l/g).length;
+      if (lCount > 1) {
+        similarDomains.push(domain.replaceAll('l', 'I'));
+        similarDomains.push(domain.replaceAll('l', '1'));
+      }
+    }
+
+    if (domain.includes('1')) {
+      similarDomains.push(domain.replace('1', 'l'));
+      similarDomains.push(domain.replace('1', 'I'));
+    }
+
+    if (domain.includes('2')) {
+      similarDomains.push(domain.replace('2', 'Z'));
+    }
+
+    if (domain.includes('3')) {
+      similarDomains.push(domain.replace('3', 'E'));
+    }
+
+    if (domain.includes('4')) {
+      similarDomains.push(domain.replace('4', 'A'));
+    }
+
+    if (domain.includes('5')) {
+      similarDomains.push(domain.replace('5', 'S'));
+    }
+
+    if (domain.includes('6')) {
+      similarDomains.push(domain.replace('6', 'b'));
+    }
+
+    if (domain.includes('7')) {
+      similarDomains.push(domain.replace('7', 'T'));
+    }
+
+    if (domain.includes('8')) {
+      similarDomains.push(domain.replace('8', 'B'));
+    }
+
+    if (domain.includes('9')) {
+      similarDomains.push(domain.replace('9', 'g'));
+    }
+
+    if (domain.includes('0')) {
+      similarDomains.push(domain.replace('0', 'O'));
+    }
+
+    if (domain.includes('a')) {
+      similarDomains.push(domain.replace('a', 'o'));
+    }
+
+    if (domain.includes('b')) {
+      similarDomains.push(domain.replace('b', '6'));
+    }
+
+    if (domain.includes('c')) {
+      similarDomains.push(domain.replace('c', 'e'));
+    }
+
+    if (domain.includes('d')) {
+      similarDomains.push(domain.replace('d', 'o'));
+    }
+
+    if (domain.includes('e')) {
+      similarDomains.push(domain.replace('e', 'c'));
+    }
+
+    if (domain.includes('f')) {
+      similarDomains.push(domain.replace('f', 't'));
+    }
+
+    if (domain.includes('g')) {
+      similarDomains.push(domain.replace('g', '9'));
+    }
+
+    if (domain.includes('h')) {
+      similarDomains.push(domain.replace('h', 'n'));
+    }
+
+    if (domain.includes('i')) {
+      similarDomains.push(domain.replace('i', 'l'));
+      similarDomains.push(domain.replace('i', '1'));
+    }
+
+    if (domain.includes('j')) {
+      similarDomains.push(domain.replace('j', 'i'));
+    }
+
+    if (domain.includes('k')) {
+      similarDomains.push(domain.replace('k', 'l'));
+    }
+
+    if (domain.includes('m')) {
+      similarDomains.push(domain.replace('m', 'n'));
+    }
+
+    if (domain.includes('n')) {
+      similarDomains.push(domain.replace('n', 'h'));
+    }
+
+    if (domain.includes('o')) {
+      similarDomains.push(domain.replace('o', 'a'));
+      similarDomains.push(domain.replace('o', 'd'));
+    }
+
+    if (domain.includes('p')) {
+      similarDomains.push(domain.replace('p', 'o'));
+    }
+
+    if (domain.includes('q')) {
+      similarDomains.push(domain.replace('q', 'g'));
+    }
+
+    if (domain.includes('r')) {
+      similarDomains.push(domain.replace('r', 't'));
+    }
+
+    if (domain.includes('s')) {
+      similarDomains.push(domain.replace('s', '5'));
+    }
+
+    if (domain.includes('t')) {
+      similarDomains.push(domain.replace('t', 'f'));
+      similarDomains.push(domain.replace('t', 'r'));
+    }
+
+    if (domain.includes('u')) {
+      similarDomains.push(domain.replace('u', 'v'));
+    }
+
+    if (domain.includes('v')) {
+      similarDomains.push(domain.replace('v', 'u'));
+    }
+
+    if (domain.includes('w')) {
+      similarDomains.push(domain.replace('w', 'vv'));
+    }
+
+    if (domain.includes('x')) {
+      similarDomains.push(domain.replace('x', 'y'));
+    }
+
+    if (domain.includes('y')) {
+      similarDomains.push(domain.replace('y', 'x'));
+    }
+
+    if (domain.includes('z')) {
+      similarDomains.push(domain.replace('z', '2'));
+    }
+
+    // Display the generated domain names
+    output.innerHTML = similarDomains
+      .filter(similarDomain => isValidTld(similarDomain))
+      .map(similarDomain => `<code>${similarDomain}</code> - ${generateLink(similarDomain)}`)
+      .join('<br>');
+  }
+
+  // Define the array of domain names
+  var domains = [
+    'google.com', 'facebook.com', 'netflix.com', 'amazon.com', 'microsoft.com', 'apple.com'
+  ];
+
+
+  function generateButtons(domains) {
+    var parentElement = document.querySelector('.examples-wrapper');
+
+    for (var i = 0; i < domains.length; i++) {
+      var button = document.createElement('button');
+
+      button.innerText = domains[i];
+
+      button.addEventListener('click', function () {
+        document.getElementById('domain').value = this.innerText;
+        generateSimilarDomains();
+      });
+      parentElement.appendChild(button);
+    }
+  }
+
+  generateButtons(domains);
+
+  document.getElementById('domain').addEventListener('input', generateSimilarDomains);
+
+</script>
