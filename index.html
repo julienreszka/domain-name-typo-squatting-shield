@@ -13,8 +13,16 @@
       font-size: x-large;
     }
 
-    a {
+    .sans-serif {
       font-family: sans-serif;
+    }
+
+    .serif {
+      font-family: serif;
+    }
+
+    .uppercase {
+      text-transform: uppercase;
     }
 
     summary {
@@ -59,7 +67,7 @@
   console.assert(isValidTld('google.con') === false)
   console.assert(isValidTld('google.com') === true)
   const generateLink = function (domain) {
-    return isValidTld(domain) ? `<a href="http://${domain}" target="_blank">${domain}</a>` : 'Invalid TLD'
+    return isValidTld(domain) ? `<a class="sans-serif" href="http://${domain}" target="_blank">${domain}</a> <a class="serif" href="http://${domain}" target="_blank">${domain}</a> <a class="uppercase" href="http://${domain}" target="_blank">${domain}</a> ` : 'Invalid TLD'
   }
 
   if (window.location.search) {
